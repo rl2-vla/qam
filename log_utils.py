@@ -85,9 +85,10 @@ def get_hash(s):
 
 def get_exp_name(flags):
     """Return the experiment name."""
-    s = flags.flags_into_string()
-    exp_name = s
-    return get_hash(exp_name)
+    # s = flags.flags_into_string()
+    # exp_name = s
+    # return get_hash(exp_name)
+    return "qam_" + datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
 def get_flag_dict():

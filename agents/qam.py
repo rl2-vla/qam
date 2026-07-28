@@ -255,6 +255,31 @@ class QAMAgent(flax.struct.PyTreeNode):
         agent, infos = jax.lax.scan(self._update, self, batch)
         return agent, jax.tree_util.tree_map(lambda x: x.mean(), infos)
 
+    def compute_val_metrics(self, batch, rng):
+        """Compute validation metrics without gradient updates."""
+        
+        # Use same loss computation as training (no gradients)
+        _, loss_info = self.total_loss(batch, self.network.params, rng)
+
+        # Compute action prediction MSE
+        pred_actions = self.sample_actions(batch['observations'], rng=rng)
+        if self.config["action_chunking"]:
+            gt_actions = jnp.reshape(batch['actions'], (batch['actions'].shape[0], -1))
+        else:
+            gt_actions = batch['actions'][..., 0, :]
+        action_mse = jnp.mean((pred_actions - gt_actions) ** 2)
+
+        # Return with 'val/' prefix to distinguish from training
+        return {
+            'val/critic_loss': loss_info['critic/critic_loss'],
+            'val/q_mean': loss_info['critic/q_mean'],
+            'val/q_max': loss_info['critic/q_max'],
+            'val/q_min': loss_info['critic/q_min'],
+            'val/flow_loss': loss_info['actor/flow_loss'],
+            'val/adj_loss': loss_info['actor/adj_loss'],
+            'val/action_mse': action_mse,
+        }
+
     @jax.jit
     def sample_actions(
         self,
@@ -318,6 +343,20 @@ class QAMAgent(flax.struct.PyTreeNode):
 
         actions = jnp.clip(actions, -1, 1)
         return actions
+
+    @partial(jax.jit, static_argnames=("model", "networks"))
+    def get_denoising_vector(
+        self,
+        observations,
+        actions,
+        model="slow",
+        networks=None,
+        i=None,
+    ):
+        t = jnp.full((*observations.shape[:-1], 1), i / self.config['flow_steps'])
+        vels = sum([network(observations, actions, t) for network in networks])
+        
+        return vels
 
     @classmethod
     def create(

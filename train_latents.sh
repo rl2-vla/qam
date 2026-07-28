@@ -1,0 +1,21 @@
+# QAM
+MUJOCO_GL=egl python main.py \
+--run_group=bridge_latents     \
+--env_name=bridge     \
+--bridge_dataset_dir=/mnt/hdd/oxe_ds_with_action_embeds_pizero_v2_CoVer_seed_42_w_ACTIONS/      \
+--offline_validation=True     \
+--online_steps=0     \
+--offline_steps=500000    \
+--eval_interval=100    \
+--agent=agents/qam.py \
+--tags=QAM \
+--seed=10001 \
+--skip_unlabeled=True    \
+--save_interval=500000    \
+--sparse=True  \
+--horizon_length=4 \
+--agent.action_chunking=True \
+--agent.inv_temp=0.1 \
+--agent.fql_alpha=0.0 \
+--agent.edit_scale=0.0 \
+--auto_cleanup=False

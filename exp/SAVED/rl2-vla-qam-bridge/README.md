@@ -1,0 +1,1 @@
+Download pretrained huggingface QAM weights and flags.json config file.
