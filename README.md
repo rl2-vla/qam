@@ -1,4 +1,4 @@
-# Adapted QAM for [RL2-VLA](https://github.com/rl2-vla/RL2-VLA)
+# Adapted QAM for [RL2-VLA](https://github.com/marmotlab/RL2-VLA)
 
 <b>Note:</b> This fork adapts QAM to train offline on [BridgeV2 tuples](https://rail-berkeley.github.io/bridgedata/) augmented with pre-computed VLA latents (e.g. from pi0). Please refer to the official [QAM repository](https://github.com/colinqiyangli/qam) for the original implementation on OGBench.
 
