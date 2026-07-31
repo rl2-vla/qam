@@ -180,7 +180,7 @@ def make_bridge_streaming_dataset(
     except ImportError:
         raise ImportError(
             "octo submodule not found. Please add it:\n"
-            "  git submodule add https://github.com/mobile-pi/octo.git octo\n"
+            "  git submodule add https://github.com/rl2-vla/octo.git octo\n"
             "  pip install git+https://github.com/kvablack/dlimp@5edaa4691567873d495633f2708982b42edf1972"
         )
 
