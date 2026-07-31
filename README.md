@@ -1,11 +1,11 @@
-# Adapted QAM for [RL2-VLA](https://github.com/rl2-vla/RL2-VLA)
+# Adapted QAM for [RL2-VLA](https://github.com/marmotlab/RL2-VLA)
 
 <b>Note:</b> This fork adapts QAM to train offline on [BridgeV2 tuples](https://rail-berkeley.github.io/bridgedata/) augmented with pre-computed VLA latents (e.g. from pi0). Please refer to the official [QAM repository](https://github.com/colinqiyangli/qam) for the original implementation on OGBench.
 
 ## Training QAM on BridgeV2 with VLA latents
 We initialized a streaming BridgeV2 dataset loader using [Octo submodule](https://github.com/rl2-vla/octo) that reads VLA hidden states from post-processed Bridge TFRecords. Running this has two steps:
 
-1. **Collect VLA latents** for the Bridge dataset using [CoVer Pi0 repository](https://github.com/mobile-pi/cover-vla), which runs inference over the pi0 policy and serializes the resulting hidden states alongside each TFRecord dataset tuple.
+1. **Collect VLA latents** for the Bridge dataset using [RL2 Pi0 repository](https://github.com/marmotlab/RL2-VLA), which runs inference over the pi0 policy and serializes the resulting hidden states alongside each TFRecord dataset tuple.
 
 2. **Train QAM on the latents dataset** with [train_latents.sh](train_latents.sh), pointing `--bridge_dataset_dir` at the TFRecord output of step 1.
 Adjust the hyperparameters in the script as needed and run:
